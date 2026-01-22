@@ -1,0 +1,27 @@
+name: Run prettier check
+
+on:
+  push:
+  pull_request:
+  merge_group:
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4.2.2
+
+      - name: Configure npm caching
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-prettier
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Run prettier (specific files only)
+        run: |
+          npx prettier --check \
+            _data/chains/eip155-478549.json \
+            _data/icons/mintrax.json
